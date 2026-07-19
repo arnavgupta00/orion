@@ -1,0 +1,15 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+coverage/
+output/playwright/
+.playwright-cli/
+.wrangler/
+.dev.vars*
+!.dev.vars.example
+.env*
+tests/e2e/*.js-snapshots/
+.DS_Store
+*.log
+*.tsbuildinfo

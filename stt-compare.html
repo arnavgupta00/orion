@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080b11" />
+    <meta name="description" content="Compare four Gemini speech-to-text paths from one microphone capture." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Orion — STT Comparison</title>
+  </head>
+  <body>
+    <main class="compare-shell">
+      <header class="compare-header">
+        <a class="back-link" href="/" aria-label="Return to Orion">ORION</a>
+        <div class="header-title">
+          <span>VOICE LAB / 01</span>
+          <h1>One voice. Four Gemini paths.</h1>
+        </div>
+        <div class="session-state" id="session-state">OFFLINE</div>
+      </header>
+
+      <section class="entry-gate" id="entry-gate" aria-labelledby="entry-title">
+        <div class="gate-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="eyebrow">TRANSCRIPTION BENCH</p>
+        <h2 id="entry-title">Say it once.<br />Judge the models, not your memory.</h2>
+        <p>One microphone capture runs through two Gemini Live streams and two Gemini batch audio models. Hold Space to speak or double-tap Space to latch.</p>
+        <button id="initialize-comparison" type="button">ENABLE MICROPHONE</button>
+        <div id="gate-error" class="gate-error" role="alert" hidden></div>
+      </section>
+
+      <section class="comparison-workspace" id="comparison-workspace" hidden>
+        <div class="capture-strip" id="capture-strip">
+          <div class="capture-state">
+            <span class="capture-dot" aria-hidden="true"></span>
+            <div>
+              <strong id="capture-label">READY</strong>
+              <span id="capture-time">00.0 S</span>
+            </div>
+          </div>
+
+          <button class="voice-pad" id="voice-pad" type="button" aria-label="Hold to record">
+            <span class="space-key">SPACE</span>
+            <span class="voice-pad-hint">HOLD / DOUBLE-TAP</span>
+          </button>
+
+          <div class="waveform" id="comparison-waveform" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+
+          <div class="latched-actions" id="latched-actions" hidden>
+            <button id="cancel-latched" type="button" aria-label="Cancel recording">×</button>
+            <button id="finish-latched" type="button" aria-label="Finish recording">✓</button>
+          </div>
+        </div>
+
+        <div class="model-grid" aria-live="polite">
+          <article class="model-card g31-live" data-model="g31-live">
+            <header>
+              <div><span class="model-index">A</span><h2>Gemini 3.1 Live</h2></div>
+              <span class="model-state" id="g31-live-state">WAITING</span>
+            </header>
+            <p class="model-spec">GOOGLE · NATIVE AUDIO · STREAMING INPUT</p>
+            <p class="model-price"><strong>≈ $0.005–0.006 / MIN</strong><span>LIVE AUDIO INPUT + TRANSCRIPT TOKENS</span></p>
+            <div class="transcript" id="g31-live-transcript">Your transcript will settle here.</div>
+            <footer><span id="g31-live-words">— WORDS</span><span id="g31-live-latency">— THIS</span><span id="g31-live-p50">— P50</span><span id="g31-live-p95">— P95</span><span id="g31-live-cost">— COST</span></footer>
+          </article>
+
+          <article class="model-card g25-live" data-model="g25-live">
+            <header>
+              <div><span class="model-index">B</span><h2>Gemini 2.5 Live</h2></div>
+              <span class="model-state" id="g25-live-state">WAITING</span>
+            </header>
+            <p class="model-spec">GOOGLE · NATIVE AUDIO · STREAMING INPUT</p>
+            <p class="model-price"><strong>≈ $0.0045–0.005 / MIN</strong><span>25 AUDIO TOKENS / SECOND + TRANSCRIPT</span></p>
+            <div class="transcript" id="g25-live-transcript">Your transcript will settle here.</div>
+            <footer><span id="g25-live-words">— WORDS</span><span id="g25-live-latency">— THIS</span><span id="g25-live-p50">— P50</span><span id="g25-live-p95">— P95</span><span id="g25-live-cost">— COST</span></footer>
+          </article>
+
+          <article class="model-card g3-flash" data-model="g3-flash">
+            <header>
+              <div><span class="model-index">C</span><h2>Gemini 3 Flash</h2></div>
+              <span class="model-state" id="g3-flash-state">WAITING</span>
+            </header>
+            <p class="model-spec">GOOGLE · FLASH PREVIEW · SEALED AUDIO</p>
+            <p class="model-price"><strong>≈ $0.0020–0.0027 / MIN</strong><span>32 AUDIO TOKENS / SECOND + TEXT TOKENS</span></p>
+            <div class="transcript" id="g3-flash-transcript">Your transcript will settle here.</div>
+            <footer><span id="g3-flash-words">— WORDS</span><span id="g3-flash-latency">— THIS</span><span id="g3-flash-p50">— P50</span><span id="g3-flash-p95">— P95</span><span id="g3-flash-cost">— COST</span></footer>
+          </article>
+
+          <article class="model-card g31-lite" data-model="g31-lite">
+            <header>
+              <div><span class="model-index">D</span><h2>Gemini 3.1 Lite</h2></div>
+              <span class="model-state" id="g31-lite-state">WAITING</span>
+            </header>
+            <p class="model-spec">GOOGLE · FLASH LITE · BATCH AUDIO</p>
+            <p class="model-price"><strong>≈ $0.0010–0.0013 / MIN</strong><span>32 AUDIO TOKENS / SECOND + TEXT TOKENS</span></p>
+            <div class="transcript" id="g31-lite-transcript">Your transcript will settle here.</div>
+            <footer><span id="g31-lite-words">— WORDS</span><span id="g31-lite-latency">— THIS</span><span id="g31-lite-p50">— P50</span><span id="g31-lite-p95">— P95</span><span id="g31-lite-cost">— COST</span></footer>
+          </article>
+        </div>
+
+        <p class="comparison-note" id="comparison-note">Latency begins when Space is released. Live models stream during speech; batch models begin after the WAV is sealed.</p>
+        <p class="pricing-note">PAY-AS-YOU-GO USD · ESTIMATES USE PUBLISHED TOKEN RATES, CAPTURE DURATION, AND RETURNED USAGE WHERE AVAILABLE · P50/P95 COVER THIS TAB'S LAST 30 PASSES</p>
+      </section>
+      <div id="turnstile-anchor" aria-hidden="true"></div>
+    </main>
+    <script type="module" src="/src/stt-compare/main.ts"></script>
+  </body>
+</html>

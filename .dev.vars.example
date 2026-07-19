@@ -1,0 +1,6 @@
+# Copy this file to .dev.vars for local live-provider testing.
+# Never commit the populated .dev.vars file.
+GEMINI_API_KEY=
+DEEPGRAM_API_KEY=
+TURNSTILE_SECRET=
+SESSION_SIGNING_KEY=

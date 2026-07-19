@@ -1,0 +1,49 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "orion",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-07-16",
+  "compatibility_flags": ["nodejs_compat"],
+  "routes": [
+    { "pattern": "orion.arnav.network", "custom_domain": true }
+  ],
+  "assets": {
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/*", "!/assets/*", "!/mediapipe/*", "!/models/*", "!/pcm-worklet.js", "!/favicon.svg", "!/stt-compare*"]
+  },
+  "vars": {
+    "GEMINI_MODEL": "gemini-3.1-flash-lite",
+    "DEEPGRAM_STT_MODEL": "flux-general-en",
+    "DEEPGRAM_TTS_MODEL": "aura-2-orion-en",
+    "ORION_OWNER_TOKEN_HASH": "",
+    "ORION_OPEN_ACCESS_UNTIL": ""
+  },
+  "ratelimits": [
+    {
+      "name": "SESSION_RATE_LIMITER",
+      "namespace_id": "26071601",
+      "simple": { "limit": 3, "period": 60 }
+    },
+    {
+      "name": "TOKEN_RATE_LIMITER",
+      "namespace_id": "26071602",
+      "simple": { "limit": 8, "period": 60 }
+    },
+    {
+      "name": "RESPONSE_RATE_LIMITER",
+      "namespace_id": "26071603",
+      "simple": { "limit": 12, "period": 60 }
+    },
+    {
+      "name": "SPEECH_RATE_LIMITER",
+      "namespace_id": "26071604",
+      "simple": { "limit": 12, "period": 60 }
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "logs": { "head_sampling_rate": 1 },
+    "traces": { "enabled": true, "head_sampling_rate": 0.05 }
+  }
+}

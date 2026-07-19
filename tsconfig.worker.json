@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "composite": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "types": []
+  },
+  "include": ["src/worker.ts", "src/knowledge/arnavKnowledge.ts", "src/knowledge/arnavCareerEvidence.generated.ts", "src/stt-compare/geminiModels.ts", "src/voice/input/transcriptionVocabulary.ts", "src/voice/intelligence/orbApplicationContext.ts", "src/voice/session/openAccess.ts", "src/voice/workflow/dualSurfaceEnvelope.ts", "src/voice/types.ts", "src/worker-secrets.d.ts", "worker-configuration.d.ts"]
+}
