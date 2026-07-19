@@ -97,6 +97,7 @@ export type ProviderErrorCode =
   | 'unavailable'
   | 'invalid_credentials'
   | 'session_expired'
+  | 'verification_required'
   | 'invalid_request';
 
 export type VoiceTurnEvent =

@@ -9,7 +9,7 @@ import { apiError } from '../voice/api/providerErrors';
 import { MicStateMachine } from '../voice/control/micStateMachine';
 import { MicrophoneCapture } from '../voice/input/microphoneCapture';
 import { buildGeminiTranscriptionPrompt } from '../voice/input/transcriptionVocabulary';
-import { turnstileToken } from '../voice/session/turnstile';
+import { createBrowserSession } from '../voice/session/browserSession';
 import type { MicState } from '../voice/types';
 import { GeminiLiveTranscriptionClient } from './geminiLiveClient';
 import {
@@ -326,21 +326,10 @@ class SttComparisonController {
 
   private async establishSession(): Promise<void> {
     const ownerMode = new URLSearchParams(window.location.search).get('owner') === '1';
-    const local = ['localhost', '127.0.0.1'].includes(window.location.hostname);
     if (ownerMode && !this.ownerAccessCode) {
       this.ownerAccessCode = window.prompt('Orion owner access code')?.trim() ?? '';
     }
-    const verification = this.ownerAccessCode || local ? undefined : await turnstileToken();
-    const response = await fetch('/api/session', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...(verification ? { turnstileToken: verification } : {}),
-        ...(this.ownerAccessCode ? { ownerToken: this.ownerAccessCode } : {}),
-      }),
-    });
-    if (!response.ok) throw await apiError(response);
+    await createBrowserSession(this.ownerAccessCode);
   }
 
   private resetCards(): void {

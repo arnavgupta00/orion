@@ -172,8 +172,8 @@ async function createSession(request: Request, env: Env, ctx: ExecutionContext):
     return apiError('invalid_credentials', 'Owner access code was not recognized.', 403);
   }
 
-  if (!local && !ownerAccess) {
-    if (!body.turnstileToken) return apiError('invalid_request', 'Verification is required.', 400);
+  if (!local && !ownerAccess && !openAccess) {
+    if (!body.turnstileToken) return apiError('verification_required', 'Verification is required.', 400);
     const valid = await verifyTurnstile(body.turnstileToken, ip, env.TURNSTILE_SECRET);
     if (!valid) return apiError('invalid_request', 'Verification could not be completed.', 403);
     if (!openAccess) {

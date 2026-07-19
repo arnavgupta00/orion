@@ -100,7 +100,7 @@ pnpm exec wrangler secret put SESSION_SIGNING_KEY
 
 Never place real provider keys in a committed Wrangler file. The public repository contains configuration shape only.
 
-Public sessions normally last 15 minutes or 21 completed turns and have endpoint-specific rate limits. `ORION_OPEN_ACCESS_UNTIL` can temporarily bypass application-level session, turn, transcription, response, TTS, and token limits until an explicit UTC timestamp. Turnstile, signed cookies, provider billing limits, and Cloudflare platform limits still apply.
+Public sessions normally last 15 minutes or 21 completed turns and have endpoint-specific rate limits. `ORION_OPEN_ACCESS_UNTIL` temporarily bypasses browser verification plus application-level session, turn, transcription, response, TTS, and token limits until an explicit UTC timestamp. Signed cookies, provider billing limits, and Cloudflare platform limits still apply; Turnstile resumes automatically after the window.
 
 ## Privacy and analytics
 

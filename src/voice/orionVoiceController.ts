@@ -5,7 +5,7 @@ import { hasAudiblePcm, pcm16ChunksToWav, pcmDurationMs } from './input/pcmWav';
 import { DeepgramStreamingTts } from './output/deepgramStreamingTts';
 import { renderScreenMarkdown } from './output/screenMarkdown';
 import { StreamingAudioPlayback } from './output/streamingAudio';
-import { turnstileToken } from './session/turnstile';
+import { createBrowserSession } from './session/browserSession';
 import { PageToolRunner } from './tools/pageToolRunner';
 import { appendHistory } from './workflow/conversation';
 import {
@@ -24,7 +24,6 @@ import type {
   MicState,
   OrbCommand,
   ProviderErrorCode,
-  SessionResponse,
   SourceLink,
   VoiceTurnEvent,
 } from './types';
@@ -720,18 +719,9 @@ export class OrionVoice {
   }
 
   private async establishSession(): Promise<void> {
-    const token = await turnstileToken();
     const ownerInput = element<HTMLInputElement>('owner-access-code');
     const ownerToken = this.ownerAccessCode || ownerInput.value.trim();
-    const response = await fetch('/api/session', {
-      method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...(token ? { turnstileToken: token } : {}),
-        ...(ownerToken ? { ownerToken } : {}),
-      }),
-    });
-    if (!response.ok) throw await apiError(response);
-    const session = await response.json() as SessionResponse;
+    const session = await createBrowserSession(ownerToken);
     this.ownerSession = session.owner === true;
     this.openAccessSession = session.openAccess === true;
     if (session.owner && ownerToken) {
